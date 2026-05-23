@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PawZ</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --c1: #ff6b6b; --c2: #ffd93d; --c3: #6bcb77; --c4: #4d96ff; --c5: #ff6bb5;
+    }
+    body {
+      background: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Sans', sans-serif;
+      overflow: hidden;
+    }
+
+    /* Stage */
+    .stage {
+      position: relative;
+      width: min(520px, 92vw);
+      height: 130px;
+      margin-bottom: 44px;
+      cursor: pointer;
+    }
+
+    /* Paw prints */
+    .paw {
+      position: absolute;
+      bottom: 0;
+      font-size: 1rem;
+      opacity: 0;
+      animation: paw-fade 4.6s linear infinite;
+    }
+    .paw:nth-child(1)  { left: 8%;  animation-delay: 0.2s;  }
+    .paw:nth-child(2)  { left: 16%; animation-delay: 0.55s; transform: rotate(10deg); }
+    .paw:nth-child(3)  { left: 26%; animation-delay: 0.9s;  }
+    .paw:nth-child(4)  { left: 36%; animation-delay: 1.25s; transform: rotate(-8deg); }
+    .paw:nth-child(5)  { left: 46%; animation-delay: 1.6s;  }
+    .paw:nth-child(6)  { left: 56%; animation-delay: 1.95s; transform: rotate(10deg); }
+    .paw:nth-child(7)  { left: 66%; animation-delay: 2.3s;  }
+    .paw:nth-child(8)  { left: 76%; animation-delay: 2.65s; transform: rotate(-8deg); }
+    .paw:nth-child(9)  { left: 86%; animation-delay: 3s;    }
+    @keyframes paw-fade {
+      0%,100% { opacity: 0; } 15%,55% { opacity: 0.55; } 80% { opacity: 0; }
+    }
+
+    /* Cat */
+    .cat {
+      position: absolute;
+      top: 0;
+      left: -100px;
+      font-size: clamp(5rem, 14vw, 7rem);
+      line-height: 1;
+      animation: cat-walk 4.6s linear infinite;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.08));
+    }
+    .cat-inner {
+      display: inline-block;
+      animation: cat-bounce 0.28s ease-in-out infinite alternate;
+    }
+    @keyframes cat-walk {
+      0%   { left: -100px;            transform: scaleX(1);  }
+      44%  { left: calc(100% + 20px); transform: scaleX(1);  }
+      50%  { left: calc(100% + 20px); transform: scaleX(-1); }
+      94%  { left: -100px;            transform: scaleX(-1); }
+      100% { left: -100px;            transform: scaleX(1);  }
+    }
+    @keyframes cat-bounce {
+      from { transform: translateY(0); }
+      to   { transform: translateY(-7px); }
+    }
+
+    /* Tooltip */
+    .tooltip {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) scale(0.85);
+      background: #1a1a1a;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      white-space: nowrap;
+      max-width: 260px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .tooltip.show {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+
+    /* Button */
+    .btn-pawz {
+      display: inline-block;
+      text-decoration: none;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.15rem, 3.5vw, 1.5rem);
+      letter-spacing: 0.06em;
+      padding: 0.7em 2.6em;
+      border-radius: 100px;
+      border: none;
+      color: #fff;
+      background: linear-gradient(110deg, var(--c1), var(--c2), var(--c3), var(--c4), var(--c5));
+      background-size: 280% 100%;
+      animation: gradient-shift 3.5s ease infinite;
+      box-shadow: 0 6px 28px rgba(255,107,107,0.28);
+      transition: transform 0.18s, box-shadow 0.18s;
+      cursor: pointer;
+    }
+    .btn-pawz:hover {
+      transform: translateY(-3px) scale(1.04);
+      box-shadow: 0 12px 36px rgba(77,150,255,0.32);
+    }
+    .btn-pawz:active { transform: translateY(0) scale(0.98); }
+    @keyframes gradient-shift {
+      0%   { background-position: 0%   50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0%   50%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stage" id="stage">
+    <span class="paw">🐾</span>
+    <span class="paw">🐾</span>
+    <span class="paw">🐾</span>
+    <span class="paw">🐾</span>
+    <span class="paw">🐾</span>
+    <span class="paw">🐾</span>
+    <span class="paw">🐾</span>
+    <span class="paw">🐾</span>
+    <span class="paw">🐾</span>
+    <span class="cat" id="cat"><span class="cat-inner">😽</span></span>
+    <div class="tooltip" id="tooltip"></div>
+  </div>
+
+  <a class="btn-pawz" href="https://paniaguai.github.io/pawz/" target="_blank" rel="noopener">PawZ</a>
+
+  <script>
+    const links = [
+      { label: 'Kirana and Garfield in Portugal', url: 'https://www.instagram.com/pawvibesz/p/DPywCUkjB-y/' },
+      { label: 'Kammy, Honey, and Luna in Johannesburg, South Africa', url: 'https://www.instagram.com/p/DQ81RFoDLrR/' },
+      { label: 'Theresa and Molly in Johannesburg, South Africa', url: 'https://www.instagram.com/pawvibesz/p/DRg359_DJYp/' },
+      { label: 'Tracey and Kitty in Montréal, Canada', url: 'https://www.instagram.com/pawvibesz/p/DQHdlvijDXc/' },
+      { label: 'Cristina and Boobie in New Mexico, USA', url: 'https://www.instagram.com/p/DT5gAvkDJ6F/' },
+      { label: 'Jasmin and Sir Fluffy in Texas, USA', url: 'https://www.instagram.com/pawvibesz/p/DYMrA9wDFiT/' },
+      { label: 'Deven and Chino in Michigan, USA', url: 'https://www.instagram.com/pawvibesz/p/DYMrOHqDLNu/' },
+      { label: 'Jasmine and Albert in Maryland, USA', url: 'https://www.instagram.com/p/DT0gQKrDK0S/' },
+      { label: 'Laird, Gino and Seacat in Chagrin Falls, Ohio, USA', url: 'https://www.instagram.com/pawvibesz/p/DObiX8QjIS4/' },
+      { label: 'Chasity, Athena, Aries and Luna in Louisiana, USA', url: 'https://www.instagram.com/p/DUEOIgLjp7F/' },
+      { label: 'JayleAna and Evangeline in Tennessee, USA', url: 'https://www.instagram.com/pawvibesz/p/DOdFIjejIrU/' },
+      { label: 'Saddie, Goodwill and Butter in Denver, CO, USA', url: 'https://www.instagram.com/pawvibesz/p/DMzf132sfL2/' },
+      { label: 'Mitch and Gittel in Washington, D.C, USA', url: 'https://www.instagram.com/pawvibesz/p/DQl5FWRjKaF/' },
+      { label: 'Stefen and Bello in Philadelphia, USA', url: 'https://www.instagram.com/pawvibesz/p/DOYOdI-DIBK/' },
+      { label: 'Arianne and Lanter in Philippines', url: 'https://www.instagram.com/p/DUAsFOPDBTp/' },
+      { label: 'Princess, Nami and Tito in Cavite, Philippines', url: 'https://www.instagram.com/p/DT-Cqk0jL8R/' },
+      { label: 'Luna, Spanky and Cinnamon in Philippines', url: 'https://www.instagram.com/p/DOI2phaDB30/' },
+      { label: 'JD and Thomas in Philippines', url: 'https://www.instagram.com/p/DUS1Wt5jEWT/' },
+      { label: 'Dynne and Cloudy in Philippines', url: 'https://www.instagram.com/p/DOImw_MjLSf/' },
+      { label: 'Aimee and Smokey in Philippines', url: 'https://www.instagram.com/pawvibesz/p/DMSj2v6tjGh/' },
+      { label: 'Lou and Logan in Philippines', url: 'https://www.instagram.com/reels/DUp8Uk7DEeY/' },
+      { label: 'Dina, Himler and PonPon in Indonesia', url: 'https://www.instagram.com/pawvibesz/reel/DRUP6xKjOWY/' },
+      { label: 'Cia and Abu in Jakarta, Indonesia', url: 'https://www.instagram.com/pawvibesz/p/DMVxJR9sJ3H/' },
+      { label: 'Sekar and Miyu in Jakarta, Indonesia', url: 'https://www.instagram.com/pawvibesz/p/DMxDywrM-GL/' },
+      { label: 'Pepe-san, Kotaro and Kojiro in Tokyo, Japan', url: 'https://www.instagram.com/p/DVI5g5yjGCH/' },
+      { label: 'Melissa and Ava in Seoul, South Korea', url: 'https://www.instagram.com/pawvibesz/p/DQtxDiODIkF/' },
+      { label: 'Sharifa and Chewy in Singapore', url: 'https://www.instagram.com/pawvibesz/p/DRuPvkrjPHY/' },
+      { label: 'Barbara, Pixel and Critic in Hamburg, Germany', url: 'https://www.instagram.com/p/DVqNwM4jKyk/' },
+      { label: 'Stephanie and Barnabey in Munich, Germany', url: 'https://www.instagram.com/pawvibesz/p/DMxOmMHsXLj/' },
+      { label: 'Finola, Yoko and Ushy in Hamburg, Germany', url: 'https://www.instagram.com/p/DTurZ18DPcX/' },
+      { label: 'Fátima and Maggie in Dublin, Ireland', url: 'https://www.instagram.com/p/DWHdSK_DEbf/' },
+      { label: 'Annie and Jeeves on the Boat in London, UK', url: 'https://www.instagram.com/pawvibesz/p/DPg6LoAjJ8N/' },
+      { label: 'Lucy and Keeva in Cheshire, UK', url: 'https://www.instagram.com/p/DVikRkxjJK4/' },
+      { label: 'Sara and Aysha in London, UK', url: 'https://www.instagram.com/p/DUnO-iJDELr/' },
+      { label: 'Anastasia and Frankie in Italy', url: 'https://www.instagram.com/pawvibesz/p/DRSOXJyjA1J/' },
+      { label: 'Beatrice and Cesare in Zurich, Switzerland', url: 'https://www.instagram.com/p/DRjXIJaDFob/' },
+      { label: 'Ana and Lluna in Amsterdam, Netherlands', url: 'https://www.instagram.com/pawvibesz/p/DQHdEJSDEZO/' },
+      { label: 'Silvia and Yumi in Cáceres, Spain', url: 'https://www.instagram.com/pawvibesz/p/DMSQEwtMVvz/' },
+      { label: 'Betinna y Sassy en Cantabria, Spain', url: 'https://www.instagram.com/pawvibesz/p/DMahTiMtLYX/' },
+      { label: 'Ayelén, Eo y Ginebra en Valencia, Spain', url: 'https://www.instagram.com/pawvibesz/p/DMcdX4sMXMO/' },
+      { label: 'John, Murfie and Gilbert in Valencia, Spain', url: 'https://www.instagram.com/pawvibesz/p/DMXsYtWNPJQ/' },
+      { label: 'María, Cendra y Van Gogh en Castellón, Spain', url: 'https://www.instagram.com/pawvibesz/p/DMczrbKNFlT/' },
+      { label: 'Célia and Pulpo in Madrid, Spain', url: 'https://www.instagram.com/pawvibesz/p/DMacsnttKXf/' },
+      { label: 'Montse y Olaf en Madrid, Spain', url: 'https://www.instagram.com/pawvibesz/p/DMZoZUjtkZl/' },
+      { label: 'Nevena and Josefine in Gran Canaria, Spain', url: 'https://www.instagram.com/p/DMxdFN-tIRA/' },
+      { label: 'Letizia and Iris in Tenerife, Spain', url: 'https://www.instagram.com/pawvibesz/p/DMXsUP_tG78/' },
+      { label: 'Josefina y Rayas in Cataluña, Spain', url: 'https://www.instagram.com/pawvibesz/p/DK_200qtaaX/' },
+      { label: 'Anastasia and Osi in Barcelona, Spain', url: 'https://www.instagram.com/pawvibesz/p/DLiKv5WNt1G/' },
+      { label: 'Lina, Bagui and Fede in Barcelona, Spain', url: 'https://www.instagram.com/pawvibesz/p/DQewK8ZDHM-/' },
+      { label: 'Marco y Cheto en Barcelona, Spain', url: 'https://www.instagram.com/pawvibesz/p/DMx-9hSNX3O/' },
+      { label: 'Sylvia and Max in Córdoba, Spain', url: 'https://www.instagram.com/pawvibesz/p/DLsRA81NLmp/' },
+      { label: 'Ashley and Apollo in Orihuela, Spain', url: 'https://www.instagram.com/catswoppr/reel/DSRv-j-jYn7/' },
+      { label: 'Nez and Que in Baku, Azerbaijan', url: 'https://www.instagram.com/pawvibesz/p/DMU0FOCsdN9/' },
+      { label: 'Karolina, Mitti and Luna in Poland', url: 'https://www.instagram.com/pawvibesz/p/DLnErFms9q5/' },
+      { label: 'Gusté, Kosmosis and Principle in Lithuania', url: 'https://www.instagram.com/pawvibesz/p/DMZvZd-N5lg/' },
+      { label: 'Myrto and Sue in Greece', url: 'https://www.instagram.com/pawvibesz/p/DL6047GNs3_/' },
+      { label: 'Prana, Halloween and Luna in Cyprus', url: 'https://www.instagram.com/pawvibesz/p/DMSyS4fNFbl/' },
+      { label: 'Sofía y Gordo en El Salvador', url: 'https://www.instagram.com/pawvibesz/p/DMa0nNst1rx/' },
+      { label: 'Fiorella and Kevin en Costa Rica', url: 'https://www.instagram.com/pawvibesz/p/DMTLuqesYLc/' }
+    ];
+
+    let tooltipTimer;
+    const cat = document.getElementById('cat');
+    const tooltip = document.getElementById('tooltip');
+
+    function pickRandom() {
+      return links[Math.floor(Math.random() * links.length)];
+    }
+
+    cat.addEventListener('click', () => {
+      const pick = pickRandom();
+      tooltip.textContent = pick.label;
+      tooltip.classList.add('show');
+      clearTimeout(tooltipTimer);
+      tooltipTimer = setTimeout(() => tooltip.classList.remove('show'), 2200);
+      window.open(pick.url, '_blank', 'noopener');
+    });
+
+    // Also show tooltip on hover (desktop)
+    cat.style.cursor = 'pointer';
+    cat.addEventListener('mouseenter', () => {
+      const pick = pickRandom();
+      tooltip.textContent = pick.label;
+      tooltip.classList.add('show');
+    });
+    cat.addEventListener('mouseleave', () => {
+      clearTimeout(tooltipTimer);
+      tooltipTimer = setTimeout(() => tooltip.classList.remove('show'), 600);
+    });
+  </script>
+</body>
+</html>
