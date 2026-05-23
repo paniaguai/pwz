@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PawZ</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --c1: #ff6b6b;
+      --c2: #ffd93d;
+      --c3: #6bcb77;
+      --c4: #4d96ff;
+      --c5: #ff6bb5;
+    }
+
+    body {
+      background: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Sans', sans-serif;
+      overflow: hidden;
+    }
+
+    /* ── Stage ── */
+    .stage {
+      position: relative;
+      width: min(520px, 92vw);
+      height: 130px;
+      margin-bottom: 44px;
+    }
+
+    /* paw prints trail */
+    .paw {
+      position: absolute;
+      bottom: 0;
+      font-size: 1rem;
+      opacity: 0;
+      animation: paw-fade 4.6s linear infinite;
+    }
+    .paw:nth-child(1)  { left: 8%;   animation-delay: 0.2s;  }
+    .paw:nth-child(2)  { left: 16%;  animation-delay: 0.55s; transform: rotate(10deg); }
+    .paw:nth-child(3)  { left: 26%;  animation-delay: 0.9s;  }
+    .paw:nth-child(4)  { left: 36%;  animation-delay: 1.25s; transform: rotate(-8deg); }
+    .paw:nth-child(5)  { left: 46%;  animation-delay: 1.6s;  }
+    .paw:nth-child(6)  { left: 56%;  animation-delay: 1.95s; transform: rotate(10deg); }
+    .paw:nth-child(7)  { left: 66%;  animation-delay: 2.3s;  }
+    .paw:nth-child(8)  { left: 76%;  animation-delay: 2.65s; transform: rotate(-8deg); }
+    .paw:nth-child(9)  { left: 86%;  animation-delay: 3s;    }
+
+    @keyframes paw-fade {
+      0%   { opacity: 0; }
+      15%  { opacity: 0.55; }
+      55%  { opacity: 0.55; }
+      80%  { opacity: 0; }
+      100% { opacity: 0; }
+    }
+
+    /* ── Cat emoji walker ── */
+    .cat {
+      position: absolute;
+      top: 0;
+      left: -100px;
+      font-size: clamp(5rem, 14vw, 7rem);
+      line-height: 1;
+      animation: cat-walk 4.6s linear infinite;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.08));
+    }
+
+    /* bounce while walking */
+    .cat-inner {
+      display: inline-block;
+      animation: cat-bounce 0.28s ease-in-out infinite alternate;
+    }
+
+    @keyframes cat-walk {
+      0%   { left: -100px;          transform: scaleX(1);  }
+      44%  { left: calc(100% + 20px); transform: scaleX(1);  }
+      50%  { left: calc(100% + 20px); transform: scaleX(-1); }
+      94%  { left: -100px;          transform: scaleX(-1); }
+      100% { left: -100px;          transform: scaleX(1);  }
+    }
+
+    @keyframes cat-bounce {
+      from { transform: translateY(0);   }
+      to   { transform: translateY(-7px); }
+    }
+
+    /* ── Button ── */
+    .btn-pawz {
+      display: inline-block;
+      text-decoration: none;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.15rem, 3.5vw, 1.5rem);
+      letter-spacing: 0.06em;
+      padding: 0.7em 2.6em;
+      border-radius: 100px;
+      border: none;
+      color: #fff;
+      background: linear-gradient(110deg, var(--c1), var(--c2), var(--c3), var(--c4), var(--c5));
+      background-size: 280% 100%;
+      animation: gradient-shift 3.5s ease infinite;
+      box-shadow: 0 6px 28px rgba(255,107,107,0.28);
+      transition: transform 0.18s, box-shadow 0.18s;
+      cursor: pointer;
+    }
+
+    .btn-pawz:hover {
+      transform: translateY(-3px) scale(1.04);
+      box-shadow: 0 12px 36px rgba(77,150,255,0.32);
+    }
+    .btn-pawz:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    @keyframes gradient-shift {
+      0%   { background-position: 0%   50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0%   50%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Walking emoji cat with paw prints -->
+  <div class="stage">
+    <span class="paw">🐾</span>
+    <span class="paw">🐾</span>
+    <span class="paw">🐾</span>
+    <span class="paw">🐾</span>
+    <span class="paw">🐾</span>
+    <span class="paw">🐾</span>
+    <span class="paw">🐾</span>
+    <span class="paw">🐾</span>
+    <span class="paw">🐾</span>
+
+    <span class="cat"><span class="cat-inner">😽</span></span>
+  </div>
+
+  <a class="btn-pawz" href="https://paniaguai.github.io/pawz/" target="_blank" rel="noopener">PawZ</a>
+
+</body>
+</html>
